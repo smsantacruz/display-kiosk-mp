@@ -1,6 +1,6 @@
 // Contrato JSON entre el Worker (/api/*) y el frontend.
 
-export type SourceId = "solar" | "weather" | "services";
+export type SourceId = "solar" | "weather" | "services" | "gmail" | "calendar";
 
 export interface ApiOk<T> {
   ok: true;
@@ -108,3 +108,38 @@ export interface ServiceCheck {
 }
 
 export type ServicesData = ServiceCheck[];
+
+export interface GmailMessage {
+  id: string;
+  threadId: string;
+  /** Nombre del remitente (sin la dirección) */
+  from: string;
+  subject: string;
+  date: string;
+}
+
+export interface GmailData {
+  unreadCount: number;
+  /** Últimos 4 emails no leídos del inbox */
+  unread: GmailMessage[];
+  /** Últimos 4 emails destacados (starred) */
+  starred: GmailMessage[];
+}
+
+export interface CalendarEvent {
+  id: string;
+  summary: string;
+  /** ISO 8601 con zona, o "YYYY-MM-DD" si isAllDay */
+  start: string;
+  end: string;
+  isAllDay: boolean;
+}
+
+export interface CalendarData {
+  /** Todos los eventos de hoy (incluyendo pasados) */
+  today: CalendarEvent[];
+  /** Próximo evento que aún no terminó; null si no hay más hoy */
+  nextUp: CalendarEvent | null;
+  /** Primeros 3 eventos de mañana (solo si today está vacío) */
+  tomorrow: CalendarEvent[];
+}
