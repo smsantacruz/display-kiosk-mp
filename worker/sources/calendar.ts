@@ -89,15 +89,18 @@ function offsetDate(dateStr: string, days: number): string {
  * Ej: "2026-08-12", "America/Argentina/Buenos_Aires" → "2026-08-12T03:00:00.000Z"
  */
 function zonedMidnight(dateStr: string, tz: string): string {
-  const utcMidnight = new Date(dateStr + "T00:00:00.000Z");
+  // Anclar en noon UTC: para cualquier timezone razonable, noon UTC cae el mismo día local
+  const noon = new Date(dateStr + "T12:00:00.000Z");
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: tz,
     hour: "numeric",
     minute: "numeric",
     hour12: false,
-  }).formatToParts(utcMidnight);
+  }).formatToParts(noon);
   const h = parseInt(parts.find((p) => p.type === "hour")?.value ?? "0", 10);
   const m = parseInt(parts.find((p) => p.type === "minute")?.value ?? "0", 10);
-  // Restar horas/minutos para que la hora local sea 00:00
-  return new Date(utcMidnight.getTime() - (h * 60 + m) * 60_000).toISOString();
+  // offset local respecto a UTC en ms (negativo para UTC-N)
+  const offsetMs = (h * 60 + m - 12 * 60) * 60_000;
+  const utcMidnight = new Date(dateStr + "T00:00:00.000Z");
+  return new Date(utcMidnight.getTime() - offsetMs).toISOString();
 }
