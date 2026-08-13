@@ -9,3 +9,9 @@
 # Si dejás esto vacío el display funciona igual, en modo demo con datos de ejemplo.
 SOLAX_CLIENT_ID=
 SOLAX_CLIENT_SECRET=
+
+# Google OAuth2 (solo lectura: Gmail + Calendar)
+# Obtener con: node scripts/get-google-token.mjs
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REFRESH_TOKEN=
