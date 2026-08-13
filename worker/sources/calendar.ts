@@ -43,8 +43,10 @@ export async function fetchCalendar(env: Env): Promise<CalendarData> {
 
   for (const item of items) {
     const event = parseEvent(item);
-    const startMs = new Date(event.start).getTime();
-    if (startMs < new Date(tomorrowStart).getTime()) {
+    const inToday = event.isAllDay
+      ? event.start < tomorrowStr          // comparación de strings de fecha
+      : new Date(event.start).getTime() < new Date(tomorrowStart).getTime();
+    if (inToday) {
       todayEvents.push(event);
     } else {
       tomorrowEvents.push(event);
@@ -52,7 +54,9 @@ export async function fetchCalendar(env: Env): Promise<CalendarData> {
   }
 
   const nowMs = Date.now();
-  const nextUp = todayEvents.find((e) => new Date(e.end).getTime() > nowMs) ?? null;
+  const nextUp = todayEvents.find(
+    (e) => !e.isAllDay && new Date(e.end).getTime() > nowMs
+  ) ?? null;
 
   return {
     today: todayEvents,
