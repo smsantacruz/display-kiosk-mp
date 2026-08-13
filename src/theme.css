@@ -728,3 +728,61 @@ body {
   padding-top: 0.5vmin;
   border-top: 1px solid var(--hairline);
 }
+
+/* ---- Calendar widget ---- */
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 1vmin;
+  overflow: hidden;
+}
+
+.calendar__section-label {
+  font-size: 1.3vmin;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.calendar__event {
+  display: grid;
+  grid-template-columns: 7vmin 1fr auto;
+  align-items: center;
+  gap: 1vmin;
+  padding: 0.6vmin 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.calendar__event:last-child {
+  border-bottom: none;
+}
+
+.calendar__event--next {
+  border-left: 2px solid var(--status-good);
+  padding-left: 1vmin;
+}
+
+.calendar__event--tomorrow {
+  opacity: 0.55;
+}
+
+.calendar__time {
+  font-size: 1.6vmin;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.calendar__summary {
+  font-size: 1.7vmin;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calendar__countdown {
+  font-size: 1.4vmin;
+  color: var(--status-good);
+  white-space: nowrap;
+}
