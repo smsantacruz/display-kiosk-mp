@@ -21,6 +21,7 @@ export function WidgetFrame({ title, status, updatedAt, errorMessage, tone, chil
       {showHeader && (
         <header className="widget__header">
           {title && <h2 className="widget__title">{title}</h2>}
+          {status === 'ok' && <span className="widget__live-dot" />}
           {status === 'stale' && (
             <span className="widget__meta widget__meta--warning">⚠ {agoLabel(updatedAt)}</span>
           )}

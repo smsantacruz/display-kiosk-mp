@@ -9,9 +9,12 @@ export async function fetchGmail(env: Env): Promise<GmailData> {
   const token = await getAccessToken(env);
   const h = { Authorization: `Bearer ${token}` };
 
-  const [labelRes, unreadListRes, starredListRes] = await Promise.all([
-    fetch(`${BASE}/labels/INBOX`, { headers: h, signal: AbortSignal.timeout(TIMEOUT_MS) }),
-    fetch(`${BASE}/messages?labelIds=INBOX&q=is%3Aunread&maxResults=${MAX_MESSAGES}`, {
+  const [unreadCountRes, unreadListRes, starredListRes] = await Promise.all([
+    fetch(`${BASE}/messages?labelIds=INBOX&q=is%3Aunread%20category%3Aprimary&maxResults=500`, {
+      headers: h,
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    }),
+    fetch(`${BASE}/messages?labelIds=INBOX&q=is%3Aunread%20category%3Aprimary&maxResults=${MAX_MESSAGES}`, {
       headers: h,
       signal: AbortSignal.timeout(TIMEOUT_MS),
     }),
@@ -21,12 +24,12 @@ export async function fetchGmail(env: Env): Promise<GmailData> {
     }),
   ]);
 
-  if (!labelRes.ok) throw new Error(`Gmail INBOX label HTTP ${labelRes.status}`);
+  if (!unreadCountRes.ok) throw new Error(`Gmail unread count HTTP ${unreadCountRes.status}`);
   if (!unreadListRes.ok) throw new Error(`Gmail unread list HTTP ${unreadListRes.status}`);
   if (!starredListRes.ok) throw new Error(`Gmail starred list HTTP ${starredListRes.status}`);
 
-  const [label, unreadList, starredList] = await Promise.all([
-    labelRes.json<{ messagesUnread: number }>(),
+  const [unreadCountData, unreadList, starredList] = await Promise.all([
+    unreadCountRes.json<{ messages?: unknown[]; resultSizeEstimate?: number }>(),
     unreadListRes.json<{ messages?: { id: string; threadId: string }[] }>(),
     starredListRes.json<{ messages?: { id: string; threadId: string }[] }>(),
   ]);
@@ -36,7 +39,8 @@ export async function fetchGmail(env: Env): Promise<GmailData> {
     fetchDetails(starredList.messages ?? [], token),
   ]);
 
-  return { unreadCount: label.messagesUnread ?? 0, unread, starred };
+  const unreadCount = unreadCountData.messages?.length ?? unreadCountData.resultSizeEstimate ?? 0;
+  return { unreadCount, unread, starred };
 }
 
 async function fetchDetails(

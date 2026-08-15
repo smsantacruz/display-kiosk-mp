@@ -26,13 +26,15 @@ function App() {
   const [x, y] = SHIFT_CYCLE[shiftIndex]
 
   return (
-    <main className="dashboard" style={{ translate: `${x}px ${y}px` }}>
-      {registry.map(({ id, area, Component }) => (
-        <div key={id} className={`cell cell--${area}`} style={{ gridArea: area }}>
-          <Component />
-        </div>
-      ))}
-    </main>
+    <>
+      <main className="dashboard" style={{ translate: `${x}px ${y}px` }}>
+        {registry.map(({ id, area, Component }) => (
+          <div key={id} className={`cell cell--${area}`} style={{ gridArea: area }}>
+            <Component />
+          </div>
+        ))}
+      </main>
+    </>
   )
 }
 

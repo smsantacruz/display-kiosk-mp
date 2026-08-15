@@ -1,14 +1,14 @@
-/* Display kiosk — AMOLED: negro puro (píxeles apagados), tinta suave, status con etiqueta. */
+/* Display kiosk — minimal dark. AMOLED: negro puro, Inter, jerarquía tipográfica. */
 
 :root {
   color-scheme: dark;
   --surface: #000000;
-  --ink: #f2f1ec;
-  --ink-secondary: #c3c2b7;
-  --ink-muted: #898781;
-  --hairline: rgba(255, 255, 255, 0.1);
-  /* Status (paleta de referencia dataviz; ≥3.6:1 sobre negro) */
-  --status-good: #0ca30c;
+  --ink: #f0efea;
+  --ink-secondary: #707070;
+  --ink-muted: #383838;
+  --hairline: rgba(255, 255, 255, 0.07);
+  --accent: #ffffff;
+  --status-good: #3a3a3a;
   --status-warning: #fab219;
   --status-critical: #d03b3b;
 }
@@ -27,8 +27,7 @@ body {
   margin: 0;
   background: var(--surface);
   color: var(--ink);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  /* Reset kiosk: sin cursor ni gestos accidentales */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   cursor: none;
   user-select: none;
   -webkit-user-select: none;
@@ -43,8 +42,8 @@ body {
 .dashboard {
   height: 100%;
   display: grid;
-  gap: 3vmin;
-  padding: 4vmin;
+  gap: 0;
+  padding: 5vmin 6vmin;
   transition: translate 1s ease;
 }
 
@@ -57,10 +56,10 @@ body {
       "gmail"
       "services";
     grid-template-rows: auto 1fr 1fr 1fr auto;
+    gap: 4vmin 0;
   }
 }
 
-/* Apaisado: clima | calendario | gmail; reloj debajo de calendario; services como franja */
 @media (orientation: landscape) {
   .dashboard {
     grid-template-areas:
@@ -69,6 +68,7 @@ body {
       "services services services";
     grid-template-columns: 1.1fr 1fr 0.9fr;
     grid-template-rows: 1.3fr 1fr auto;
+    gap: 0 5vmin;
   }
 }
 
@@ -83,13 +83,12 @@ body {
   min-width: 0;
 }
 
-/* ---- Chrome común de widget ---- */
+/* ---- Widget base ---- */
 
 .widget {
   display: flex;
   flex-direction: column;
-  gap: 1.2vmin;
-  /* centra el bloque en celdas 1fr; en celdas auto no tiene efecto */
+  gap: 1.5vmin;
   justify-content: center;
 }
 
@@ -97,20 +96,21 @@ body {
   display: flex;
   align-items: baseline;
   gap: 1.5vmin;
+  margin-bottom: 0.5vmin;
 }
 
 .widget__title {
   margin: 0;
-  font-size: 2.2vmin;
-  font-weight: 600;
+  font-size: 1.6vmin;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: var(--ink-muted);
 }
 
 .widget__meta {
-  font-size: 2vmin;
-  color: var(--ink-secondary);
+  font-size: 1.6vmin;
+  color: var(--ink-muted);
 }
 
 .widget__meta--warning {
@@ -123,65 +123,46 @@ body {
 
 .widget__error {
   margin: 0;
-  font-size: 2.4vmin;
+  font-size: 2.2vmin;
   color: var(--ink-muted);
-  overflow-wrap: anywhere;
 }
 
 .widget__note {
   margin: 0;
-  font-size: 2vmin;
-  color: var(--ink-muted);
-}
-
-/* Marco según origen de la energía (diseño 1d): borde + resplandor interior.
-   Llena la celda: el sparkline aprovecha el espacio restante dentro del marco. */
-.widget--tone-good,
-.widget--tone-warning {
-  border-radius: 1.5vmin;
-  padding: 2vmin 2.5vmin;
-}
-
-.widget--tone-good {
-  border: 1px solid rgba(12, 163, 12, 0.45);
-  box-shadow: inset 0 0 3.5vmin rgba(12, 163, 12, 0.14);
-}
-
-.widget--tone-warning {
-  border: 1px solid rgba(250, 178, 25, 0.4);
-  box-shadow: inset 0 0 3.5vmin rgba(250, 178, 25, 0.12);
+  font-size: 2.4vmin;
+  font-weight: 300;
+  color: var(--ink-secondary);
 }
 
 .widget__skeleton {
-  height: 8vmin;
-  border-radius: 1vmin;
-  background: rgba(255, 255, 255, 0.06);
-  animation: pulse 1.6s ease-in-out infinite;
+  height: 6vmin;
+  border-radius: 0.8vmin;
+  background: rgba(255, 255, 255, 0.04);
+  animation: pulse 1.8s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  50% {
-    opacity: 0.4;
-  }
+  50% { opacity: 0.3; }
 }
 
 /* ---- Stat tile ---- */
 
 .stat__value {
-  font-size: 4.6vmin;
-  font-weight: 600;
+  font-size: 4vmin;
+  font-weight: 300;
   line-height: 1.1;
 }
 
 .stat__unit {
-  font-size: 2.6vmin;
-  font-weight: 400;
+  font-size: 2.2vmin;
+  font-weight: 300;
   color: var(--ink-secondary);
 }
 
 .stat__label {
-  font-size: 2vmin;
+  font-size: 1.6vmin;
   color: var(--ink-muted);
+  margin-top: 0.3vmin;
 }
 
 .stat-row {
@@ -197,34 +178,52 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1vmin;
+  gap: 0.8vmin;
 }
 
 .clock__time {
-  /* tabular-nums a propósito: los dígitos cambian cada minuto y no deben "bailar" */
   font-variant-numeric: tabular-nums;
-  font-size: 17vmin;
-  font-weight: 200;
+  font-size: 20vmin;
+  font-weight: 100;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.clock__colon {
+  animation: colon-blink 1s step-end infinite;
+}
+
+@keyframes colon-blink {
+  50% { opacity: 0; }
 }
 
 .clock__seconds {
   font-size: 5vmin;
-  font-weight: 400;
+  font-weight: 200;
   color: var(--ink-muted);
-  margin-left: 1.5vmin;
+  margin-left: 1vmin;
   font-variant-numeric: tabular-nums;
+  animation: seconds-pulse 1s ease-out;
+  animation-iteration-count: 1;
+}
+
+@keyframes seconds-pulse {
+  0% { opacity: 0.4; transform: scale(0.92); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 .clock__date {
-  font-size: 3.4vmin;
+  font-size: 2.8vmin;
+  font-weight: 300;
   color: var(--ink-secondary);
 }
 
 .clock__sun {
-  font-size: 3.2vmin;
-  color: var(--ink-secondary);
+  font-size: 2.2vmin;
+  font-weight: 300;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
 }
 
 /* ---- Clima ---- */
@@ -236,181 +235,26 @@ body {
 }
 
 .weather__icon {
-  font-size: 8vmin;
+  font-size: 7vmin;
   line-height: 1;
 }
 
 .weather__temp {
-  font-size: 11vmin;
-  font-weight: 300;
+  font-size: 10vmin;
+  font-weight: 200;
   line-height: 1;
+  transition: opacity 0.4s ease;
 }
 
 .weather__cond {
-  font-size: 2.6vmin;
-  color: var(--ink);
+  font-size: 2.2vmin;
+  color: var(--ink-secondary);
 }
 
 .weather__feels {
-  color: var(--ink-secondary);
-  font-size: 2.2vmin;
-}
-
-/* ---- Solar ---- */
-
-.solar__hero {
-  display: flex;
-  align-items: baseline;
-  gap: 2.5vmin;
-  flex-wrap: wrap;
-}
-
-.solar__power {
-  font-size: 10vmin;
-  font-weight: 300;
-  line-height: 1;
-}
-
-.solar__power--idle {
-  opacity: 0.45;
-}
-
-.solar__power-unit {
-  font-size: 4vmin;
-  color: var(--ink-secondary);
-}
-
-.badge {
-  font-size: 2.4vmin;
-  padding: 0.6vmin 1.4vmin;
-  border-radius: 1vmin;
-  border: 1px solid var(--hairline);
-}
-
-.badge--critical {
-  color: var(--status-critical);
-  border-color: var(--status-critical);
-}
-
-.flow-arrow {
-  font-weight: 700;
-}
-
-.flow-arrow--good {
-  color: var(--status-good);
-}
-
-.flow-arrow--warning {
-  color: var(--status-warning);
-}
-
-/* ---- Solar: cuadrícula paneles/casa/red/% ---- */
-
-.solar-grid {
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 2vmin 3.5vmin;
-  justify-content: space-between;
-  align-items: end;
-}
-
-
-.flow__node {
-  min-width: 0;
-}
-
-.flow__value {
-  font-size: 4.6vmin;
-  font-weight: 600;
-  line-height: 1.1;
-  white-space: nowrap;
-}
-
-.flow__value--main {
-  font-size: 7vmin;
-  font-weight: 300;
-}
-
-.flow__value--idle {
-  opacity: 0.45;
-}
-
-/* Tinte sutil por origen: paneles verdoso, red ambarino (tinta mezclada, no saturada).
-   Después de las bases a propósito: a igual especificidad gana el último. */
-.flow__value--solar {
-  color: #96d292;
-}
-
-.flow__value--grid {
-  color: #f5d898;
-  font-weight: 400;
-}
-
-.flow__arrow {
-  font-size: 3.6vmin;
-  font-weight: 700;
-  flex: none;
-}
-
-.flow__arrow--good {
-  color: var(--status-good);
-  animation: flow-pulse 3s ease-in-out infinite alternate;
-}
-
-.flow__arrow--warning {
-  color: var(--status-warning);
-  animation: flow-pulse 3s ease-in-out infinite alternate;
-}
-
-.flow__arrow--off {
+  font-size: 1.8vmin;
   color: var(--ink-muted);
-  opacity: 0.3;
-}
-
-@keyframes flow-pulse {
-  from {
-    opacity: 0.6;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .flow__arrow--good,
-  .flow__arrow--warning {
-    animation: none;
-  }
-}
-
-/* ---- Curva del día: llena el espacio restante del widget ---- */
-
-.sparkline-box {
-  flex: 1;
-  min-height: 8vmin;
-  display: flex;
-  align-items: flex-end;
-}
-
-.sparkline {
-  width: 100%;
-  height: 100%;
-  max-height: 26vmin;
-  display: block;
-}
-
-.sparkline__line {
-  fill: none;
-  stroke: var(--status-good);
-  stroke-width: 2px;
-  vector-effect: non-scaling-stroke;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-}
-
-.sparkline__area {
-  fill: rgba(12, 163, 12, 0.1);
-  stroke: none;
+  margin-top: 0.4vmin;
 }
 
 /* ---- Pronóstico horario ---- */
@@ -426,26 +270,26 @@ body {
 }
 
 .hourly__hour {
-  font-size: 2.6vmin;
+  font-size: 2vmin;
   color: var(--ink-muted);
 }
 
 .hourly__icon {
-  font-size: 5vmin;
+  font-size: 4.5vmin;
   line-height: 1.4;
 }
 
 .hourly__temp {
-  font-size: 3.4vmin;
-  font-weight: 600;
+  font-size: 2.8vmin;
+  font-weight: 400;
 }
 
 .hourly__rain {
-  font-size: 2.4vmin;
-  color: var(--ink-secondary);
+  font-size: 1.8vmin;
+  color: var(--ink-muted);
 }
 
-/* ---- Pronóstico de próximos días ---- */
+/* ---- Pronóstico días ---- */
 
 .daily {
   display: flex;
@@ -458,23 +302,23 @@ body {
 }
 
 .daily__name {
-  font-size: 2.2vmin;
+  font-size: 1.8vmin;
   color: var(--ink-muted);
 }
 
 .daily__icon {
-  font-size: 4.5vmin;
+  font-size: 4vmin;
   line-height: 1.4;
 }
 
 .daily__temps {
-  font-size: 2.8vmin;
-  font-weight: 600;
+  font-size: 2.4vmin;
+  font-weight: 400;
 }
 
 .daily__rain {
-  font-size: 2vmin;
-  color: var(--ink-secondary);
+  font-size: 1.8vmin;
+  color: var(--ink-muted);
 }
 
 /* ---- Servicios ---- */
@@ -486,23 +330,27 @@ body {
   display: flex;
   gap: 4vmin;
   flex-wrap: wrap;
+  padding-top: 2vmin;
+  border-top: 1px solid var(--hairline);
 }
 
 .services__item {
   display: flex;
   align-items: center;
-  gap: 1.2vmin;
-  font-size: 2.4vmin;
+  gap: 1vmin;
+  font-size: 1.8vmin;
+  color: var(--ink-secondary);
 }
 
 .services__dot {
-  width: 1.6vmin;
-  height: 1.6vmin;
+  width: 1.2vmin;
+  height: 1.2vmin;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .services__dot--good {
-  background: var(--status-good);
+  background: #2a6e2a;
 }
 
 .services__dot--warning {
@@ -517,32 +365,168 @@ body {
   color: var(--ink-muted);
 }
 
-/* ---- Diseño 2 (apaisado): clima protagonista, reloj compacto ----
-   Al final del archivo a propósito: a igual especificidad debe ganarle a las bases de arriba. */
+/* ---- Gmail widget ---- */
+
+.gmail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2vmin;
+  overflow: hidden;
+}
+
+.gmail__count {
+  display: flex;
+  align-items: baseline;
+  gap: 1vmin;
+  margin-bottom: 0.5vmin;
+}
+
+.gmail__unread-number {
+  font-size: 10vmin;
+  font-weight: 100;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  transition: opacity 0.4s ease;
+}
+
+.gmail__unread-label {
+  font-size: 1.8vmin;
+  font-weight: 300;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.gmail__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.gmail__item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8vmin 0;
+  border-bottom: 1px solid var(--hairline);
+  overflow: hidden;
+}
+
+.gmail__item:last-child {
+  border-bottom: none;
+}
+
+.gmail__from {
+  font-size: 1.7vmin;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gmail__subject {
+  font-size: 1.5vmin;
+  font-weight: 300;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.2vmin;
+}
+
+.gmail__divider {
+  font-size: 1.2vmin;
+  font-weight: 400;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 1vmin 0 0.4vmin;
+}
+
+/* ---- Calendar widget ---- */
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.calendar__section-label {
+  font-size: 1.1vmin;
+  font-weight: 400;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.6vmin;
+}
+
+.calendar__event {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5vmin;
+  padding: 0.9vmin 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.calendar__event:last-child {
+  border-bottom: none;
+}
+
+.calendar__event--next .calendar__summary {
+  color: var(--ink);
+}
+
+.calendar__event--next .calendar__time {
+  color: var(--ink-secondary);
+}
+
+.calendar__event--tomorrow {
+  opacity: 0.4;
+}
+
+.calendar__time {
+  font-size: 1.7vmin;
+  font-weight: 300;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  min-width: 6vmin;
+}
+
+.calendar__summary {
+  font-size: 1.8vmin;
+  font-weight: 300;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.calendar__countdown {
+  font-size: 1.4vmin;
+  font-weight: 400;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.3vmin 0.8vmin;
+  border-radius: 0.6vmin;
+}
+
+/* ---- Landscape overrides ---- */
 
 @media (orientation: landscape) {
-  /* Combo hora al máximo, centrado, con el sol debajo */
   .clock__time {
     font-size: 18vmin;
   }
 
-  .clock__seconds {
-    font-size: 5vmin;
-  }
-
-  .clock__date {
-    font-size: 3.4vmin;
-  }
-
-  .clock__sun {
-    font-size: 3.8vmin;
-  }
-
-  /* Los tres bloques superiores alineados al mismo tope */
   .cell--clock .clock {
     align-items: center;
     text-align: center;
-    gap: 1.4vmin;
     justify-content: flex-start;
     padding-top: 2vmin;
   }
@@ -553,238 +537,113 @@ body {
     padding-top: 2vmin;
   }
 
-  /* Solar al máximo de su celda (sin invadir la hora: la grilla lo contiene) */
-  .cell--solar .flow__value {
-    font-size: 6.6vmin;
-  }
-
-  .cell--solar .flow__value--main {
-    font-size: 8.6vmin;
-  }
-
-  .cell--solar .flow__arrow {
-    font-size: 5.2vmin;
-  }
-
-  .cell--solar .stat__value {
-    font-size: 6.4vmin;
-  }
-
-  .cell--solar .stat__label {
-    font-size: 2.6vmin;
-  }
-
-  /* Servicios como lista vertical, centrada entre clima y la columna de la hora */
-  .cell--services .widget {
-    align-items: center;
-  }
-
   .cell--services .services {
     flex-direction: column;
-    gap: 2.4vmin;
-  }
-
-  .cell--services .services__item {
-    font-size: 2.9vmin;
-  }
-
-  .cell--services .services__dot {
-    width: 2vmin;
-    height: 2vmin;
+    gap: 1.8vmin;
+    border-top: none;
+    border-left: 1px solid var(--hairline);
+    padding-top: 0;
+    padding-left: 2vmin;
   }
 
   .weather__icon {
-    font-size: 14vmin;
+    font-size: 12vmin;
   }
 
   .weather__temp {
-    font-size: 23vmin;
+    font-size: 20vmin;
   }
 
   .weather__cond {
-    font-size: 4.2vmin;
+    font-size: 3.5vmin;
   }
 
   .weather__feels {
-    font-size: 3.4vmin;
+    font-size: 2.8vmin;
   }
 
-  .cell--weather .stat__value {
-    font-size: 6vmin;
-  }
-
-  .cell--weather .stat__label {
-    font-size: 2.7vmin;
-  }
-
-  .cell--weather .widget {
-    gap: 2.4vmin;
-  }
-
-  /* Pronóstico horario al máximo: las columnas se reparten el ancho completo */
   .hourly {
-    gap: 0;
     justify-content: space-between;
+    gap: 0;
   }
 
-  .hourly__hour {
-    font-size: 3.6vmin;
-  }
+  .hourly__hour { font-size: 3vmin; }
+  .hourly__icon { font-size: 6vmin; }
+  .hourly__temp { font-size: 4vmin; }
+  .hourly__rain { font-size: 2.8vmin; }
 
-  .hourly__icon {
-    font-size: 7vmin;
-  }
+  .daily__name { font-size: 2.4vmin; }
+  .daily__icon { font-size: 5vmin; }
+  .daily__temps { font-size: 3.4vmin; }
+  .daily__rain { font-size: 2.4vmin; }
 
-  .hourly__temp {
-    font-size: 4.6vmin;
-  }
+  .gmail__unread-number { font-size: 8vmin; }
+  .gmail__from { font-size: 2vmin; }
+  .gmail__subject { font-size: 1.7vmin; }
 
-  .hourly__rain {
-    font-size: 3.4vmin;
-  }
-
-  .daily__name {
-    font-size: 2.8vmin;
-  }
-
-  .daily__icon {
-    font-size: 5.5vmin;
-  }
-
-  .daily__temps {
-    font-size: 4vmin;
-  }
-
-  .daily__rain {
-    font-size: 2.8vmin;
-  }
+  .calendar__time { font-size: 2vmin; }
+  .calendar__summary { font-size: 2.1vmin; }
+  .calendar__countdown { font-size: 1.6vmin; }
 }
 
-/* ---- Gmail widget ---- */
+/* ---- Widget live dot ---- */
 
-.gmail {
-  display: flex;
-  flex-direction: column;
-  gap: 1vmin;
-  overflow: hidden;
+.widget__live-dot {
+  width: 1.2vmin;
+  height: 1.2vmin;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+  animation: live-pulse 3s ease-in-out infinite;
 }
 
-.gmail__count {
-  display: flex;
-  align-items: baseline;
-  gap: 0.8vmin;
+@keyframes live-pulse {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 0.7; transform: scale(1); }
 }
 
-.gmail__unread-number {
-  font-size: 6vmin;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--ink);
+/* ---- Mascota ---- */
+
+.mascot {
+  position: fixed;
+  bottom: 5vmin;
+  right: 6vmin;
+  width: 14vmin;
+  height: 14vmin;
+  z-index: 10;
 }
 
-.gmail__unread-label {
-  font-size: 1.6vmin;
-  color: var(--ink-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.mascot-svg {
+  filter: drop-shadow(0 0 2vmin rgba(255, 255, 255, 0.08));
 }
 
-.gmail__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5vmin;
+.mascot-float {
+  animation: mascot-float 4s ease-in-out infinite;
+  transform-origin: 50px 50px;
 }
 
-.gmail__item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1vmin;
-  overflow: hidden;
+@keyframes mascot-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
-.gmail__from {
-  font-size: 1.5vmin;
-  font-weight: 600;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.mascot-wave-arm {
+  animation: mascot-wave 0.3s ease-in-out infinite alternate;
+  transform-origin: 94px 48px;
 }
 
-.gmail__subject {
-  font-size: 1.4vmin;
-  color: var(--ink-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+@keyframes mascot-wave {
+  from { transform: rotate(-15deg); }
+  to { transform: rotate(15deg); }
 }
 
-.gmail__divider {
-  font-size: 1.3vmin;
-  color: var(--ink-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding-top: 0.5vmin;
-  border-top: 1px solid var(--hairline);
+.mascot-antenna-dot {
+  animation: antenna-blink 2s ease-in-out infinite;
 }
 
-/* ---- Calendar widget ---- */
-
-.calendar {
-  display: flex;
-  flex-direction: column;
-  gap: 1vmin;
-  overflow: hidden;
+@keyframes antenna-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
 }
 
-.calendar__section-label {
-  font-size: 1.3vmin;
-  color: var(--ink-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.calendar__event {
-  display: grid;
-  grid-template-columns: 7vmin 1fr auto;
-  align-items: center;
-  gap: 1vmin;
-  padding: 0.6vmin 0;
-  border-bottom: 1px solid var(--hairline);
-}
-
-.calendar__event:last-child {
-  border-bottom: none;
-}
-
-.calendar__event--next {
-  border-left: 2px solid var(--status-good);
-  padding-left: 1vmin;
-}
-
-.calendar__event--tomorrow {
-  opacity: 0.55;
-}
-
-.calendar__time {
-  font-size: 1.6vmin;
-  color: var(--ink-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.calendar__summary {
-  font-size: 1.7vmin;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.calendar__countdown {
-  font-size: 1.4vmin;
-  color: var(--status-good);
-  white-space: nowrap;
-}
+/* ---- "Sin reuniones" más visible ---- */

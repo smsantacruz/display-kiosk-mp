@@ -2,7 +2,7 @@ import type { CalendarData, CalendarEvent } from '../../shared/api-types'
 import { WidgetFrame } from '../components/WidgetFrame'
 import { useWidgetData } from '../hooks/useWidgetData'
 
-const POLL_MS = 5 * 60 * 1000
+const POLL_MS = 30 * 1000
 
 function formatTime(iso: string, allDay: boolean): string {
   if (allDay) return 'Todo el día'

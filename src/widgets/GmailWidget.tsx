@@ -4,6 +4,11 @@ import { useWidgetData } from '../hooks/useWidgetData'
 
 const POLL_MS = 2 * 60 * 1000
 
+function formatCount(n: number): string {
+  if (n >= 1000) return `${Math.floor(n / 1000)}k`
+  return String(n)
+}
+
 export function GmailWidget() {
   const { data, status, updatedAt, errorMessage } = useWidgetData<GmailData>(
     '/api/gmail',
@@ -15,7 +20,7 @@ export function GmailWidget() {
       {data && (
         <div className="gmail">
           <div className="gmail__count">
-            <span className="gmail__unread-number">{data.unreadCount}</span>
+            <span className="gmail__unread-number">{formatCount(data.unreadCount)}</span>
             <span className="gmail__unread-label">no leídos</span>
           </div>
 

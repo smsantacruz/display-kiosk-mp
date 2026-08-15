@@ -33,8 +33,8 @@ export function ClockWidget() {
   return (
     <div className="clock">
       <div className="clock__time">
-        {time}
-        <span className="clock__seconds">{seconds}</span>
+        {time.slice(0, 2)}<span className="clock__colon">:</span>{time.slice(3)}
+        <span key={seconds} className="clock__seconds">{seconds}</span>
       </div>
       <div className="clock__date">{date}</div>
       {weather?.sunrise && (
