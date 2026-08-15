@@ -647,3 +647,53 @@ body {
 }
 
 /* ---- "Sin reuniones" más visible ---- */
+
+/* ---- Greeting overlay ---- */
+
+.greeting-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  backdrop-filter: blur(8px);
+}
+
+.greeting-overlay--in {
+  opacity: 0;
+}
+
+.greeting-overlay--visible {
+  opacity: 1;
+}
+
+.greeting-overlay--out {
+  opacity: 0;
+}
+
+.greeting-overlay__content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1vmin;
+}
+
+.greeting-overlay__hello {
+  font-size: 5vmin;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.greeting-overlay__name {
+  font-size: 18vmin;
+  font-weight: 100;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
