@@ -4,18 +4,23 @@
   color-scheme: dark;
   --surface: #000000;
   --ink: #ffffff;
-  --ink-secondary: #9da5b4;
-  --ink-muted: #6b7280;
-  --hairline: rgba(255, 255, 255, 0.1);
+  /* Sunlight-readable palette: direct sun washes out low-luminance/low-saturation colors
+     first. Secondary/muted text moved from mid-gray to near-white so it survives glare;
+     accents moved from soft "editor" pastels to saturated, high-luminance hues — the same
+     logic transit signage and outdoor displays use (white/amber/cyan cut through glare,
+     muted olive/mustard tones do not). */
+  --ink-secondary: #d5d9de;
+  --ink-muted: #9aa1ab;
+  --hairline: rgba(255, 255, 255, 0.14);
   --accent: #ffffff;
-  --accent-blue: #61afef;
-  --accent-green: #98c379;
-  --accent-amber: #e5c07b;
-  --accent-red: #e06c75;
-  --accent-purple: #c678dd;
-  --status-good: #98c379;
-  --status-warning: #e5c07b;
-  --status-critical: #e06c75;
+  --accent-blue: #4fc3f7;
+  --accent-green: #6ee76e;
+  --accent-amber: #ffd23f;
+  --accent-red: #ff5a52;
+  --accent-purple: #e0a3ff;
+  --status-good: #6ee76e;
+  --status-warning: #ffd23f;
+  --status-critical: #ff5a52;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
@@ -156,7 +161,7 @@ body {
 .widget__note {
   margin: 0;
   font-size: 3vmin;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--ink-secondary);
 }
 
@@ -184,7 +189,7 @@ body {
 .stat__unit {
   font-family: var(--font-mono);
   font-size: 2.6vmin;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--ink-secondary);
 }
 
@@ -260,7 +265,7 @@ body {
 .clock__sun {
   font-family: var(--font-mono);
   font-size: 3vmin;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--ink-muted);
   letter-spacing: 0.04em;
 }
@@ -470,7 +475,7 @@ body {
 
 .calendar__summary {
   font-size: 2.6vmin;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--ink-secondary);
   white-space: nowrap;
   overflow: hidden;
