@@ -60,13 +60,12 @@ body {
       "clock"
       "weather"
       "calendar"
-      "gmail"
       "services";
     /* Rows size to their own content (not equal huge 1fr slices) — on very tall/narrow
-       screens, forcing weather/calendar/gmail into equal fractions left each one centered
+       screens, forcing weather/calendar into equal fractions left each one centered
        inside its own oversized empty slot. align-content spreads the leftover space evenly
        between blocks instead, so gaps read as intentional breathing room, not dead space. */
-    grid-template-rows: repeat(5, auto);
+    grid-template-rows: repeat(4, auto);
     align-content: space-evenly;
     gap: 3vmin 0;
   }
@@ -75,10 +74,10 @@ body {
 @media (orientation: landscape) {
   .dashboard {
     grid-template-areas:
-      "weather calendar gmail"
-      "weather clock    gmail"
-      "services services services";
-    grid-template-columns: 1.1fr 1fr 0.9fr;
+      "weather calendar"
+      "weather clock"
+      "services services";
+    grid-template-columns: 1.1fr 1fr;
     grid-template-rows: 1.3fr 1fr auto;
     gap: 0 5vmin;
   }
@@ -417,91 +416,6 @@ body {
   color: var(--ink-muted);
 }
 
-/* ---- Gmail widget ---- */
-
-.gmail {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2vmin;
-  overflow: hidden;
-}
-
-.gmail__count {
-  display: flex;
-  align-items: baseline;
-  gap: 1vmin;
-  margin-bottom: 0.5vmin;
-}
-
-.gmail__unread-number {
-  font-family: var(--font-mono);
-  font-size: 12vmin;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--accent-amber);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  transition: opacity 0.4s ease;
-}
-
-.gmail__unread-label {
-  font-family: var(--font-mono);
-  font-size: 2.4vmin;
-  font-weight: 500;
-  color: var(--ink-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.gmail__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.gmail__item {
-  display: flex;
-  flex-direction: column;
-  padding: 0.8vmin 0;
-  border-bottom: 1px solid var(--hairline);
-  overflow: hidden;
-}
-
-.gmail__item:last-child {
-  border-bottom: none;
-}
-
-.gmail__from {
-  font-size: 2.6vmin;
-  font-weight: 600;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.gmail__subject {
-  font-size: 2.3vmin;
-  font-weight: 400;
-  color: var(--ink-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 0.2vmin;
-}
-
-.gmail__divider {
-  font-family: var(--font-mono);
-  font-size: 2vmin;
-  font-weight: 500;
-  color: var(--accent-purple);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 1vmin 0 0.4vmin;
-}
-
 /* ---- Calendar widget ---- */
 
 .calendar {
@@ -634,10 +548,6 @@ body {
   .daily__icon { font-size: 5vmin; }
   .daily__temps { font-size: 3.4vmin; }
   .daily__rain { font-size: 2.6vmin; }
-
-  .gmail__unread-number { font-size: 8vmin; }
-  .gmail__from { font-size: 2.4vmin; }
-  .gmail__subject { font-size: 2vmin; }
 
   .calendar__time { font-size: 2.3vmin; }
   .calendar__summary { font-size: 2.5vmin; }
