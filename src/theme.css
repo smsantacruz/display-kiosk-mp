@@ -62,8 +62,13 @@ body {
       "calendar"
       "gmail"
       "services";
-    grid-template-rows: auto 1fr 1fr 1fr auto;
-    gap: 4vmin 0;
+    /* Rows size to their own content (not equal huge 1fr slices) — on very tall/narrow
+       screens, forcing weather/calendar/gmail into equal fractions left each one centered
+       inside its own oversized empty slot. align-content spreads the leftover space evenly
+       between blocks instead, so gaps read as intentional breathing room, not dead space. */
+    grid-template-rows: repeat(5, auto);
+    align-content: space-evenly;
+    gap: 3vmin 0;
   }
 }
 
@@ -97,6 +102,12 @@ body {
   flex-direction: column;
   gap: 1.5vmin;
   justify-content: center;
+  /* Editor-panel card look: on very glossy/reflective screens, a lit background box reads
+     as "content" against the glass reflection much better than text floating on pure black. */
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--hairline);
+  border-radius: 1.4vmin;
+  padding: 2.5vmin 3vmin;
 }
 
 .widget__header {
@@ -109,7 +120,7 @@ body {
 .widget__title {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 2vmin;
+  font-size: 2.4vmin;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -124,7 +135,7 @@ body {
 
 .widget__meta {
   font-family: var(--font-mono);
-  font-size: 2vmin;
+  font-size: 2.4vmin;
   color: var(--ink-secondary);
 }
 
@@ -138,14 +149,14 @@ body {
 
 .widget__error {
   margin: 0;
-  font-size: 2.4vmin;
+  font-size: 2.8vmin;
   font-weight: 500;
   color: var(--ink-secondary);
 }
 
 .widget__note {
   margin: 0;
-  font-size: 2.6vmin;
+  font-size: 3vmin;
   font-weight: 400;
   color: var(--ink-secondary);
 }
@@ -173,14 +184,14 @@ body {
 
 .stat__unit {
   font-family: var(--font-mono);
-  font-size: 2.2vmin;
+  font-size: 2.6vmin;
   font-weight: 400;
   color: var(--ink-secondary);
 }
 
 .stat__label {
   font-family: var(--font-mono);
-  font-size: 1.9vmin;
+  font-size: 2.3vmin;
   color: var(--ink-muted);
   margin-top: 0.3vmin;
 }
@@ -199,13 +210,19 @@ body {
   flex-direction: column;
   justify-content: center;
   gap: 0.8vmin;
+  /* Matches .widget's card treatment — ClockWidget doesn't go through WidgetFrame, so it
+     needs its own copy to look consistent with the rest of the dashboard. */
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--hairline);
+  border-radius: 1.4vmin;
+  padding: 2.5vmin 3vmin;
 }
 
 .clock__time {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-  font-size: 20vmin;
-  font-weight: 500;
+  font-size: 26vmin;
+  font-weight: 600;
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--accent-blue);
@@ -221,7 +238,7 @@ body {
 
 .clock__seconds {
   font-family: var(--font-mono);
-  font-size: 5vmin;
+  font-size: 6vmin;
   font-weight: 500;
   color: var(--ink-muted);
   margin-left: 1vmin;
@@ -236,14 +253,14 @@ body {
 }
 
 .clock__date {
-  font-size: 3vmin;
+  font-size: 3.6vmin;
   font-weight: 500;
   color: var(--ink-secondary);
 }
 
 .clock__sun {
   font-family: var(--font-mono);
-  font-size: 2.6vmin;
+  font-size: 3vmin;
   font-weight: 400;
   color: var(--ink-muted);
   letter-spacing: 0.04em;
@@ -258,27 +275,27 @@ body {
 }
 
 .weather__icon {
-  font-size: 7vmin;
+  font-size: 8vmin;
   line-height: 1;
 }
 
 .weather__temp {
   font-family: var(--font-mono);
-  font-size: 10vmin;
-  font-weight: 500;
+  font-size: 13vmin;
+  font-weight: 600;
   line-height: 1;
   color: var(--accent-blue);
   transition: opacity 0.4s ease;
 }
 
 .weather__cond {
-  font-size: 2.6vmin;
+  font-size: 3vmin;
   font-weight: 500;
   color: var(--ink-secondary);
 }
 
 .weather__feels {
-  font-size: 2.2vmin;
+  font-size: 2.6vmin;
   color: var(--ink-muted);
   margin-top: 0.4vmin;
 }
@@ -297,25 +314,25 @@ body {
 
 .hourly__hour {
   font-family: var(--font-mono);
-  font-size: 2.4vmin;
+  font-size: 2.8vmin;
   color: var(--ink-muted);
 }
 
 .hourly__icon {
-  font-size: 4.5vmin;
+  font-size: 5vmin;
   line-height: 1.4;
 }
 
 .hourly__temp {
   font-family: var(--font-mono);
-  font-size: 2.8vmin;
+  font-size: 3.2vmin;
   font-weight: 600;
   color: var(--ink);
 }
 
 .hourly__rain {
   font-family: var(--font-mono);
-  font-size: 2.2vmin;
+  font-size: 2.6vmin;
   color: var(--accent-blue);
 }
 
@@ -333,25 +350,25 @@ body {
 
 .daily__name {
   font-family: var(--font-mono);
-  font-size: 2.2vmin;
+  font-size: 2.6vmin;
   color: var(--ink-muted);
 }
 
 .daily__icon {
-  font-size: 4vmin;
+  font-size: 4.5vmin;
   line-height: 1.4;
 }
 
 .daily__temps {
   font-family: var(--font-mono);
-  font-size: 2.4vmin;
+  font-size: 2.8vmin;
   font-weight: 600;
   color: var(--ink);
 }
 
 .daily__rain {
   font-family: var(--font-mono);
-  font-size: 2.2vmin;
+  font-size: 2.6vmin;
   color: var(--accent-blue);
 }
 
@@ -373,7 +390,7 @@ body {
   align-items: center;
   gap: 1vmin;
   font-family: var(--font-mono);
-  font-size: 2.2vmin;
+  font-size: 2.6vmin;
   color: var(--ink-secondary);
 }
 
@@ -418,8 +435,8 @@ body {
 
 .gmail__unread-number {
   font-family: var(--font-mono);
-  font-size: 10vmin;
-  font-weight: 500;
+  font-size: 12vmin;
+  font-weight: 600;
   line-height: 1;
   color: var(--accent-amber);
   font-variant-numeric: tabular-nums;
@@ -429,7 +446,7 @@ body {
 
 .gmail__unread-label {
   font-family: var(--font-mono);
-  font-size: 2vmin;
+  font-size: 2.4vmin;
   font-weight: 500;
   color: var(--ink-secondary);
   text-transform: uppercase;
@@ -457,7 +474,7 @@ body {
 }
 
 .gmail__from {
-  font-size: 2.1vmin;
+  font-size: 2.6vmin;
   font-weight: 600;
   color: var(--ink);
   white-space: nowrap;
@@ -466,7 +483,7 @@ body {
 }
 
 .gmail__subject {
-  font-size: 1.9vmin;
+  font-size: 2.3vmin;
   font-weight: 400;
   color: var(--ink-secondary);
   white-space: nowrap;
@@ -477,7 +494,7 @@ body {
 
 .gmail__divider {
   font-family: var(--font-mono);
-  font-size: 1.6vmin;
+  font-size: 2vmin;
   font-weight: 500;
   color: var(--accent-purple);
   text-transform: uppercase;
@@ -495,7 +512,7 @@ body {
 
 .calendar__section-label {
   font-family: var(--font-mono);
-  font-size: 1.6vmin;
+  font-size: 2vmin;
   font-weight: 500;
   color: var(--accent-purple);
   text-transform: uppercase;
@@ -529,7 +546,7 @@ body {
 
 .calendar__time {
   font-family: var(--font-mono);
-  font-size: 2.1vmin;
+  font-size: 2.5vmin;
   font-weight: 500;
   color: var(--ink-muted);
   font-variant-numeric: tabular-nums;
@@ -538,7 +555,7 @@ body {
 }
 
 .calendar__summary {
-  font-size: 2.2vmin;
+  font-size: 2.6vmin;
   font-weight: 400;
   color: var(--ink-secondary);
   white-space: nowrap;
@@ -549,7 +566,7 @@ body {
 
 .calendar__countdown {
   font-family: var(--font-mono);
-  font-size: 1.7vmin;
+  font-size: 2.1vmin;
   font-weight: 500;
   color: var(--accent-green);
   white-space: nowrap;
