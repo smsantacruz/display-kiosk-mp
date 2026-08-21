@@ -7,6 +7,8 @@ declare global {
     SOLAX_CLIENT_ID: string;
     /** Client Secret de esa misma app */
     SOLAX_CLIENT_SECRET: string;
+    /** Clave compartida para el relay de cámara (?token=... en publish/view) */
+    CAMERA_RELAY_TOKEN: string;
   }
 }
 

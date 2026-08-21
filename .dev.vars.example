@@ -15,3 +15,7 @@ SOLAX_CLIENT_SECRET=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GOOGLE_REFRESH_TOKEN=
+
+# Clave compartida para /api/camera/publish y /api/camera/view (relay de cámara).
+# Generar con: openssl rand -hex 24
+CAMERA_RELAY_TOKEN=

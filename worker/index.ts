@@ -1,6 +1,9 @@
 import type { ApiErr, ApiOk } from "../shared/api-types";
 import { cachedFetch } from "./cache";
+import { CameraRelay } from "./cameraRelay";
 import { isKnownSource, sources, type Source } from "./sources";
+
+export { CameraRelay };
 
 // El TTL vive solo en el Worker: el cliente siempre ve ageSeconds veraz.
 const JSON_HEADERS = {
@@ -27,6 +30,18 @@ export default {
 
     if (path === "/api/health") {
       return json({ ok: true, now: new Date().toISOString() });
+    }
+
+    if (path === "/api/camera/publish" || path === "/api/camera/view") {
+      const url = new URL(request.url);
+      if (!env.CAMERA_RELAY_TOKEN || url.searchParams.get("token") !== env.CAMERA_RELAY_TOKEN) {
+        return new Response("unauthorized", { status: 401 });
+      }
+      const role = path.endsWith("publish") ? "publisher" : "viewer";
+      const stub = env.CAMERA_RELAY.get(env.CAMERA_RELAY.idFromName("default"));
+      const relayUrl = new URL(request.url);
+      relayUrl.searchParams.set("role", role);
+      return stub.fetch(new Request(relayUrl, request));
     }
 
     const id = path.slice("/api/".length);

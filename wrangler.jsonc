@@ -10,6 +10,14 @@
   "observability": {
     "enabled": true
   },
+  "durable_objects": {
+    "bindings": [
+      { "name": "CAMERA_RELAY", "class_name": "CameraRelay" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["CameraRelay"] }
+  ],
   "vars": {
     // Ubicación para el clima (click derecho en Google Maps copia lat/lon).
     // Por defecto: Buenos Aires.
