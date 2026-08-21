@@ -20,6 +20,8 @@
     height: 100%;
     object-fit: contain;
     background: #000;
+    /* el sensor de palma expone para IR de corto alcance, no para luz ambiente */
+    filter: brightness(1.8) contrast(1.15) saturate(1.1);
   }
   #status {
     position: fixed;
