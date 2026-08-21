@@ -22,11 +22,14 @@ export class CameraRelay implements DurableObject {
     if (role === "publisher") {
       this.publisher?.close(1000, "replaced by new publisher");
       this.publisher = server;
-      server.addEventListener("message", (event) => {
+      server.addEventListener("message", async (event) => {
         if (typeof event.data === "string") return; // ignore any text control messages
+        // Cloudflare delivers binary WS frames as Blob here (not ArrayBuffer) — WebSocket.send()
+        // doesn't know how to forward a Blob as binary, so it silently stringifies it instead.
+        const data = event.data instanceof Blob ? await event.data.arrayBuffer() : event.data;
         for (const viewer of this.viewers) {
           try {
-            viewer.send(event.data);
+            viewer.send(data);
           } catch {
             this.viewers.delete(viewer);
           }
