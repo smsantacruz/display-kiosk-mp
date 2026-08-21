@@ -15,13 +15,16 @@
   }
   #frame {
     position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    width: 100vh;
+    height: 100vw;
     object-fit: contain;
     background: #000;
+    /* el sensor está montado de costado — el frame llega girado 90° */
+    transform: translate(-50%, -50%) rotate(90deg);
     /* el sensor de palma expone para IR de corto alcance, no para luz ambiente */
-    filter: brightness(1.8) contrast(1.15) saturate(1.1);
+    filter: brightness(2.4) contrast(1.2) saturate(1.15);
   }
   #status {
     position: fixed;
