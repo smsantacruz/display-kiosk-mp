@@ -64,10 +64,10 @@ body {
     grid-template-areas:
       "clock"
       "weather"
-      "calendar"
+      "exchange"
       "services";
     /* Rows size to their own content (not equal huge 1fr slices) — on very tall/narrow
-       screens, forcing weather/calendar into equal fractions left each one centered
+       screens, forcing weather/exchange into equal fractions left each one centered
        inside its own oversized empty slot. align-content spreads the leftover space evenly
        between blocks instead, so gaps read as intentional breathing room, not dead space. */
     grid-template-rows: repeat(4, auto);
@@ -79,7 +79,7 @@ body {
 @media (orientation: landscape) {
   .dashboard {
     grid-template-areas:
-      "weather calendar"
+      "weather exchange"
       "weather clock"
       "services services";
     grid-template-columns: 1.1fr 1fr;
@@ -225,11 +225,12 @@ body {
 .clock__time {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-  font-size: 26vmin;
+  font-size: 27vmin;
   font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.03em;
-  color: var(--accent-blue);
+  letter-spacing: -0.04em;
+  /* blanco puro: el mayor contraste posible contra el fondo negro a pleno sol */
+  color: var(--ink);
 }
 
 .clock__colon {
@@ -242,9 +243,9 @@ body {
 
 .clock__seconds {
   font-family: var(--font-mono);
-  font-size: 6vmin;
-  font-weight: 500;
-  color: var(--ink-muted);
+  font-size: 7vmin;
+  font-weight: 600;
+  color: var(--accent-blue);
   margin-left: 1vmin;
   font-variant-numeric: tabular-nums;
   animation: seconds-pulse 1s ease-out;
@@ -279,13 +280,13 @@ body {
 }
 
 .weather__icon {
-  font-size: 8vmin;
+  font-size: 8.5vmin;
   line-height: 1;
 }
 
 .weather__temp {
   font-family: var(--font-mono);
-  font-size: 13vmin;
+  font-size: 14vmin;
   font-weight: 600;
   line-height: 1;
   color: var(--accent-blue);
@@ -293,7 +294,7 @@ body {
 }
 
 .weather__cond {
-  font-size: 3vmin;
+  font-size: 3.1vmin;
   font-weight: 500;
   color: var(--ink-secondary);
 }
@@ -421,84 +422,43 @@ body {
   color: var(--ink-muted);
 }
 
-/* ---- Calendar widget ---- */
+/* ---- Cotización (dólar + BTC) ---- */
 
-.calendar {
+.exchange {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  gap: 1.2vmin;
 }
 
-.calendar__section-label {
-  font-family: var(--font-mono);
-  font-size: 2vmin;
-  font-weight: 500;
-  color: var(--accent-purple);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.6vmin;
-}
-
-.calendar__event {
+.exchange__row {
   display: flex;
+  justify-content: space-between;
   align-items: baseline;
-  gap: 1.5vmin;
-  padding: 0.9vmin 0;
-  border-bottom: 1px solid var(--hairline);
 }
 
-.calendar__event:last-child {
-  border-bottom: none;
+.exchange__row--secondary {
+  opacity: 0.7;
 }
 
-.calendar__event--next .calendar__summary {
-  color: var(--ink);
-}
-
-.calendar__event--next .calendar__time {
-  color: var(--accent-blue);
-}
-
-.calendar__event--tomorrow {
-  opacity: 0.5;
-}
-
-.calendar__time {
-  font-family: var(--font-mono);
-  font-size: 2.5vmin;
-  font-weight: 500;
-  color: var(--ink-muted);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  min-width: 6vmin;
-}
-
-.calendar__summary {
-  font-size: 2.6vmin;
+.exchange__label {
+  font-size: 2.8vmin;
   font-weight: 500;
   color: var(--ink-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
 }
 
-.calendar__countdown {
+.exchange__value {
   font-family: var(--font-mono);
-  font-size: 2.1vmin;
-  font-weight: 500;
+  font-size: 3.4vmin;
+  font-weight: 600;
   color: var(--accent-green);
-  white-space: nowrap;
-  background: rgba(152, 195, 121, 0.12);
-  padding: 0.3vmin 0.8vmin;
-  border-radius: 0.6vmin;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---- Landscape overrides ---- */
 
 @media (orientation: landscape) {
   .clock__time {
-    font-size: 18vmin;
+    font-size: 20vmin;
   }
 
   .cell--clock .clock {
@@ -554,9 +514,8 @@ body {
   .daily__temps { font-size: 3.4vmin; }
   .daily__rain { font-size: 2.6vmin; }
 
-  .calendar__time { font-size: 2.3vmin; }
-  .calendar__summary { font-size: 2.5vmin; }
-  .calendar__countdown { font-size: 1.9vmin; }
+  .exchange__label { font-size: 2.2vmin; }
+  .exchange__value { font-size: 2.8vmin; }
 }
 
 /* ---- Widget live dot ---- */

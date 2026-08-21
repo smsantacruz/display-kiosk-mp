@@ -1,6 +1,6 @@
 // Contrato JSON entre el Worker (/api/*) y el frontend.
 
-export type SourceId = "solar" | "weather" | "services" | "gmail" | "calendar";
+export type SourceId = "solar" | "weather" | "services" | "gmail" | "calendar" | "exchange";
 
 export interface ApiOk<T> {
   ok: true;
@@ -142,4 +142,16 @@ export interface CalendarData {
   nextUp: CalendarEvent | null;
   /** Primeros 3 eventos de mañana (solo si today está vacío) */
   tomorrow: CalendarEvent[];
+}
+
+export interface DolarQuote {
+  compra: number;
+  venta: number;
+}
+
+export interface ExchangeData {
+  dolarBlue: DolarQuote;
+  dolarOficial: DolarQuote;
+  /** precio de 1 BTC en USDT */
+  btcUsdt: number;
 }

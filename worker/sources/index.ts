@@ -1,5 +1,6 @@
-import type { CalendarData, GmailData, ServicesData, SolarData, SourceId, WeatherData } from "../../shared/api-types";
+import type { CalendarData, ExchangeData, GmailData, ServicesData, SolarData, SourceId, WeatherData } from "../../shared/api-types";
 import { fetchCalendar } from "./calendar";
+import { fetchExchange } from "./exchange";
 import { fetchGmail } from "./gmail";
 import { fetchServices } from "./services";
 import { fetchSolar } from "./solax";
@@ -18,6 +19,7 @@ export const sources = {
   services: { id: "services", ttlSeconds: 60, fetch: fetchServices } satisfies Source<ServicesData>,
   gmail: { id: "gmail", ttlSeconds: 120, fetch: fetchGmail } satisfies Source<GmailData>,
   calendar: { id: "calendar", ttlSeconds: 300, fetch: fetchCalendar } satisfies Source<CalendarData>,
+  exchange: { id: "exchange", ttlSeconds: 300, fetch: fetchExchange } satisfies Source<ExchangeData>,
 } as const;
 
 export type KnownSourceId = keyof typeof sources;
