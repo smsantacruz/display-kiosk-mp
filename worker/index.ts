@@ -23,7 +23,14 @@ export default {
   async fetch(request, env): Promise<Response> {
     const path = new URL(request.url).pathname;
 
-    // Con assets.run_worker_first: ["/api/*"], todo lo demás lo sirve la capa de assets.
+    // Link corto para el visor de cámara: evita tener que escribir/pegar el token a mano.
+    if (path === "/cam") {
+      const url = new URL("/camera.html", request.url);
+      if (env.CAMERA_RELAY_TOKEN) url.searchParams.set("token", env.CAMERA_RELAY_TOKEN);
+      return Response.redirect(url.toString(), 302);
+    }
+
+    // Con assets.run_worker_first: ["/api/*", "/cam"], todo lo demás lo sirve la capa de assets.
     if (!path.startsWith("/api/")) {
       return new Response("Not found", { status: 404 });
     }
