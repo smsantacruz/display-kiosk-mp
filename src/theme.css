@@ -1,16 +1,23 @@
-/* Display kiosk — minimal dark. AMOLED: negro puro, Inter, jerarquía tipográfica. */
+/* Display kiosk — dark editor theme. AMOLED: negro puro, JetBrains Mono + Inter, paleta tipo VS Code Dark+. */
 
 :root {
   color-scheme: dark;
   --surface: #000000;
-  --ink: #f0efea;
-  --ink-secondary: #707070;
-  --ink-muted: #383838;
-  --hairline: rgba(255, 255, 255, 0.07);
+  --ink: #ffffff;
+  --ink-secondary: #9da5b4;
+  --ink-muted: #6b7280;
+  --hairline: rgba(255, 255, 255, 0.1);
   --accent: #ffffff;
-  --status-good: #3a3a3a;
-  --status-warning: #fab219;
-  --status-critical: #d03b3b;
+  --accent-blue: #61afef;
+  --accent-green: #98c379;
+  --accent-amber: #e5c07b;
+  --accent-red: #e06c75;
+  --accent-purple: #c678dd;
+  --status-good: #98c379;
+  --status-warning: #e5c07b;
+  --status-critical: #e06c75;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 * {
@@ -27,7 +34,7 @@ body {
   margin: 0;
   background: var(--surface);
   color: var(--ink);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
   cursor: none;
   user-select: none;
   -webkit-user-select: none;
@@ -101,16 +108,24 @@ body {
 
 .widget__title {
   margin: 0;
-  font-size: 1.6vmin;
-  font-weight: 400;
+  font-family: var(--font-mono);
+  font-size: 2vmin;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
+  color: var(--accent-green);
+}
+
+.widget__title::before {
+  content: '// ';
   color: var(--ink-muted);
+  font-weight: 400;
 }
 
 .widget__meta {
-  font-size: 1.6vmin;
-  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 2vmin;
+  color: var(--ink-secondary);
 }
 
 .widget__meta--warning {
@@ -123,21 +138,22 @@ body {
 
 .widget__error {
   margin: 0;
-  font-size: 2.2vmin;
-  color: var(--ink-muted);
+  font-size: 2.4vmin;
+  font-weight: 500;
+  color: var(--ink-secondary);
 }
 
 .widget__note {
   margin: 0;
-  font-size: 2.4vmin;
-  font-weight: 300;
+  font-size: 2.6vmin;
+  font-weight: 400;
   color: var(--ink-secondary);
 }
 
 .widget__skeleton {
   height: 6vmin;
   border-radius: 0.8vmin;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
   animation: pulse 1.8s ease-in-out infinite;
 }
 
@@ -148,19 +164,23 @@ body {
 /* ---- Stat tile ---- */
 
 .stat__value {
+  font-family: var(--font-mono);
   font-size: 4vmin;
-  font-weight: 300;
+  font-weight: 500;
   line-height: 1.1;
+  color: var(--accent-blue);
 }
 
 .stat__unit {
+  font-family: var(--font-mono);
   font-size: 2.2vmin;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--ink-secondary);
 }
 
 .stat__label {
-  font-size: 1.6vmin;
+  font-family: var(--font-mono);
+  font-size: 1.9vmin;
   color: var(--ink-muted);
   margin-top: 0.3vmin;
 }
@@ -182,12 +202,13 @@ body {
 }
 
 .clock__time {
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-size: 20vmin;
-  font-weight: 100;
+  font-weight: 500;
   line-height: 1;
   letter-spacing: -0.03em;
-  color: var(--ink);
+  color: var(--accent-blue);
 }
 
 .clock__colon {
@@ -199,8 +220,9 @@ body {
 }
 
 .clock__seconds {
+  font-family: var(--font-mono);
   font-size: 5vmin;
-  font-weight: 200;
+  font-weight: 500;
   color: var(--ink-muted);
   margin-left: 1vmin;
   font-variant-numeric: tabular-nums;
@@ -214,14 +236,15 @@ body {
 }
 
 .clock__date {
-  font-size: 2.8vmin;
-  font-weight: 300;
+  font-size: 3vmin;
+  font-weight: 500;
   color: var(--ink-secondary);
 }
 
 .clock__sun {
-  font-size: 2.2vmin;
-  font-weight: 300;
+  font-family: var(--font-mono);
+  font-size: 2.6vmin;
+  font-weight: 400;
   color: var(--ink-muted);
   letter-spacing: 0.04em;
 }
@@ -240,19 +263,22 @@ body {
 }
 
 .weather__temp {
+  font-family: var(--font-mono);
   font-size: 10vmin;
-  font-weight: 200;
+  font-weight: 500;
   line-height: 1;
+  color: var(--accent-blue);
   transition: opacity 0.4s ease;
 }
 
 .weather__cond {
-  font-size: 2.2vmin;
+  font-size: 2.6vmin;
+  font-weight: 500;
   color: var(--ink-secondary);
 }
 
 .weather__feels {
-  font-size: 1.8vmin;
+  font-size: 2.2vmin;
   color: var(--ink-muted);
   margin-top: 0.4vmin;
 }
@@ -270,7 +296,8 @@ body {
 }
 
 .hourly__hour {
-  font-size: 2vmin;
+  font-family: var(--font-mono);
+  font-size: 2.4vmin;
   color: var(--ink-muted);
 }
 
@@ -280,13 +307,16 @@ body {
 }
 
 .hourly__temp {
+  font-family: var(--font-mono);
   font-size: 2.8vmin;
-  font-weight: 400;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .hourly__rain {
-  font-size: 1.8vmin;
-  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 2.2vmin;
+  color: var(--accent-blue);
 }
 
 /* ---- Pronóstico días ---- */
@@ -302,7 +332,8 @@ body {
 }
 
 .daily__name {
-  font-size: 1.8vmin;
+  font-family: var(--font-mono);
+  font-size: 2.2vmin;
   color: var(--ink-muted);
 }
 
@@ -312,13 +343,16 @@ body {
 }
 
 .daily__temps {
+  font-family: var(--font-mono);
   font-size: 2.4vmin;
-  font-weight: 400;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .daily__rain {
-  font-size: 1.8vmin;
-  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 2.2vmin;
+  color: var(--accent-blue);
 }
 
 /* ---- Servicios ---- */
@@ -338,7 +372,8 @@ body {
   display: flex;
   align-items: center;
   gap: 1vmin;
-  font-size: 1.8vmin;
+  font-family: var(--font-mono);
+  font-size: 2.2vmin;
   color: var(--ink-secondary);
 }
 
@@ -350,7 +385,7 @@ body {
 }
 
 .services__dot--good {
-  background: #2a6e2a;
+  background: var(--status-good);
 }
 
 .services__dot--warning {
@@ -382,18 +417,20 @@ body {
 }
 
 .gmail__unread-number {
+  font-family: var(--font-mono);
   font-size: 10vmin;
-  font-weight: 100;
+  font-weight: 500;
   line-height: 1;
-  color: var(--ink);
+  color: var(--accent-amber);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
   transition: opacity 0.4s ease;
 }
 
 .gmail__unread-label {
-  font-size: 1.8vmin;
-  font-weight: 300;
+  font-family: var(--font-mono);
+  font-size: 2vmin;
+  font-weight: 500;
   color: var(--ink-secondary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -420,8 +457,8 @@ body {
 }
 
 .gmail__from {
-  font-size: 1.7vmin;
-  font-weight: 500;
+  font-size: 2.1vmin;
+  font-weight: 600;
   color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
@@ -429,8 +466,8 @@ body {
 }
 
 .gmail__subject {
-  font-size: 1.5vmin;
-  font-weight: 300;
+  font-size: 1.9vmin;
+  font-weight: 400;
   color: var(--ink-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -439,9 +476,10 @@ body {
 }
 
 .gmail__divider {
-  font-size: 1.2vmin;
-  font-weight: 400;
-  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 1.6vmin;
+  font-weight: 500;
+  color: var(--accent-purple);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   padding: 1vmin 0 0.4vmin;
@@ -456,11 +494,12 @@ body {
 }
 
 .calendar__section-label {
-  font-size: 1.1vmin;
-  font-weight: 400;
-  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 1.6vmin;
+  font-weight: 500;
+  color: var(--accent-purple);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   margin-bottom: 0.6vmin;
 }
 
@@ -481,16 +520,17 @@ body {
 }
 
 .calendar__event--next .calendar__time {
-  color: var(--ink-secondary);
+  color: var(--accent-blue);
 }
 
 .calendar__event--tomorrow {
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 .calendar__time {
-  font-size: 1.7vmin;
-  font-weight: 300;
+  font-family: var(--font-mono);
+  font-size: 2.1vmin;
+  font-weight: 500;
   color: var(--ink-muted);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -498,8 +538,8 @@ body {
 }
 
 .calendar__summary {
-  font-size: 1.8vmin;
-  font-weight: 300;
+  font-size: 2.2vmin;
+  font-weight: 400;
   color: var(--ink-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -508,11 +548,12 @@ body {
 }
 
 .calendar__countdown {
-  font-size: 1.4vmin;
-  font-weight: 400;
-  color: var(--ink-secondary);
+  font-family: var(--font-mono);
+  font-size: 1.7vmin;
+  font-weight: 500;
+  color: var(--accent-green);
   white-space: nowrap;
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(152, 195, 121, 0.12);
   padding: 0.3vmin 0.8vmin;
   border-radius: 0.6vmin;
 }
@@ -555,11 +596,11 @@ body {
   }
 
   .weather__cond {
-    font-size: 3.5vmin;
+    font-size: 3.8vmin;
   }
 
   .weather__feels {
-    font-size: 2.8vmin;
+    font-size: 3vmin;
   }
 
   .hourly {
@@ -567,23 +608,23 @@ body {
     gap: 0;
   }
 
-  .hourly__hour { font-size: 3vmin; }
+  .hourly__hour { font-size: 3.2vmin; }
   .hourly__icon { font-size: 6vmin; }
   .hourly__temp { font-size: 4vmin; }
-  .hourly__rain { font-size: 2.8vmin; }
+  .hourly__rain { font-size: 3vmin; }
 
-  .daily__name { font-size: 2.4vmin; }
+  .daily__name { font-size: 2.6vmin; }
   .daily__icon { font-size: 5vmin; }
   .daily__temps { font-size: 3.4vmin; }
-  .daily__rain { font-size: 2.4vmin; }
+  .daily__rain { font-size: 2.6vmin; }
 
   .gmail__unread-number { font-size: 8vmin; }
-  .gmail__from { font-size: 2vmin; }
-  .gmail__subject { font-size: 1.7vmin; }
+  .gmail__from { font-size: 2.4vmin; }
+  .gmail__subject { font-size: 2vmin; }
 
-  .calendar__time { font-size: 2vmin; }
-  .calendar__summary { font-size: 2.1vmin; }
-  .calendar__countdown { font-size: 1.6vmin; }
+  .calendar__time { font-size: 2.3vmin; }
+  .calendar__summary { font-size: 2.5vmin; }
+  .calendar__countdown { font-size: 1.9vmin; }
 }
 
 /* ---- Widget live dot ---- */
@@ -592,14 +633,14 @@ body {
   width: 1.2vmin;
   height: 1.2vmin;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--accent-green);
   flex-shrink: 0;
   animation: live-pulse 3s ease-in-out infinite;
 }
 
 @keyframes live-pulse {
-  0%, 100% { opacity: 0.2; transform: scale(0.8); }
-  50% { opacity: 0.7; transform: scale(1); }
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1); }
 }
 
 /* ---- Mascota ---- */
@@ -614,7 +655,7 @@ body {
 }
 
 .mascot-svg {
-  filter: drop-shadow(0 0 2vmin rgba(255, 255, 255, 0.08));
+  filter: drop-shadow(0 0 2vmin rgba(97, 175, 239, 0.15));
 }
 
 .mascot-float {
@@ -645,8 +686,6 @@ body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.2; }
 }
-
-/* ---- "Sin reuniones" más visible ---- */
 
 /* ---- Greeting overlay ---- */
 
@@ -683,16 +722,22 @@ body {
 }
 
 .greeting-overlay__hello {
+  font-family: var(--font-mono);
   font-size: 5vmin;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  color: var(--accent-green);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
+.greeting-overlay__hello::before {
+  content: '> ';
+}
+
 .greeting-overlay__name {
+  font-family: var(--font-mono);
   font-size: 18vmin;
-  font-weight: 100;
+  font-weight: 600;
   color: #ffffff;
   letter-spacing: -0.02em;
   line-height: 1;
