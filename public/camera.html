@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Cámara del kiosk</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #000;
+    color: #d5d9de;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    overflow: hidden;
+  }
+  #frame {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+  }
+  #status {
+    position: fixed;
+    top: env(safe-area-inset-top, 0px);
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.8em 1em;
+    font-size: 14px;
+    background: linear-gradient(rgba(0,0,0,0.6), transparent);
+    pointer-events: none;
+  }
+  #dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #ff5a52;
+    flex: none;
+    transition: background 0.2s ease;
+  }
+  #dot.live { background: #6ee76e; }
+  #empty {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2em;
+    font-size: 15px;
+    color: #9aa1ab;
+  }
+</style>
+</head>
+<body>
+  <img id="frame" alt="" />
+  <div id="empty">Conectando con el kiosk&hellip;</div>
+  <div id="status"><span id="dot"></span><span id="label">Conectando&hellip;</span></div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+    const dot = document.getElementById("dot");
+    const label = document.getElementById("label");
+    const img = document.getElementById("frame");
+    const empty = document.getElementById("empty");
+
+    let lastFrameAt = 0;
+    let staleTimer = null;
+
+    function setState(text, live) {
+      label.textContent = text;
+      dot.classList.toggle("live", !!live);
+    }
+
+    function markStale() {
+      if (lastFrameAt && Date.now() - lastFrameAt > 8000) {
+        setState("Sin señal reciente", false);
+        empty.style.display = "flex";
+        empty.textContent = "El kiosk no está enviando video ahora mismo.";
+      }
+    }
+
+    function connect() {
+      const proto = location.protocol === "https:" ? "wss:" : "ws:";
+      const ws = new WebSocket(`${proto}//${location.host}/api/camera/view?token=${encodeURIComponent(token)}`);
+      ws.binaryType = "blob";
+
+      ws.addEventListener("open", () => setState("Conectado, esperando video…", false));
+
+      ws.addEventListener("message", (event) => {
+        if (typeof event.data === "string") return;
+        lastFrameAt = Date.now();
+        empty.style.display = "none";
+        setState("En vivo", true);
+        const url = URL.createObjectURL(event.data);
+        const prev = img.src;
+        img.src = url;
+        img.onload = () => { if (prev) URL.revokeObjectURL(prev); };
+      });
+
+      ws.addEventListener("close", () => {
+        setState("Reconectando…", false);
+        setTimeout(connect, 2000);
+      });
+
+      ws.addEventListener("error", () => ws.close());
+    }
+
+    if (!token) {
+      setState("Falta el token", false);
+      empty.textContent = "Abrí este link con ?token=... (el mismo que configuraste en el kiosk).";
+    } else {
+      connect();
+      staleTimer = setInterval(markStale, 3000);
+    }
+  </script>
+</body>
+</html>
