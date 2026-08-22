@@ -64,12 +64,14 @@ body {
     grid-template-areas:
       "clock"
       "weather"
-      "exchange"
+      "spotify"
       "services";
     /* Rows size to their own content (not equal huge 1fr slices) — on very tall/narrow
-       screens, forcing weather/exchange into equal fractions left each one centered
+       screens, forcing weather/spotify into equal fractions left each one centered
        inside its own oversized empty slot. align-content spreads the leftover space evenly
-       between blocks instead, so gaps read as intentional breathing room, not dead space. */
+       between blocks instead, so gaps read as intentional breathing room, not dead space.
+       This also means the spotify row collapses to ~0 height when SpotifyWidget renders
+       null (nothing playing) instead of leaving a dead gap. */
     grid-template-rows: repeat(4, auto);
     align-content: space-evenly;
     gap: 3vmin 0;
@@ -79,7 +81,7 @@ body {
 @media (orientation: landscape) {
   .dashboard {
     grid-template-areas:
-      "weather exchange"
+      "weather spotify"
       "weather clock"
       "services services";
     grid-template-columns: 1.1fr 1fr;
@@ -422,36 +424,85 @@ body {
   color: var(--ink-muted);
 }
 
-/* ---- Cotización (dólar + BTC) ---- */
+/* ---- Spotify (solo control remoto) ---- */
 
-.exchange {
+.spotify {
   display: flex;
   flex-direction: column;
-  gap: 1.2vmin;
+  gap: 1.6vmin;
 }
 
-.exchange__row {
+.spotify__now {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  gap: 2.5vmin;
+  min-width: 0;
 }
 
-.exchange__row--secondary {
-  opacity: 0.7;
+.spotify__art {
+  width: 12vmin;
+  height: 12vmin;
+  border-radius: 1vmin;
+  flex-shrink: 0;
+  object-fit: cover;
 }
 
-.exchange__label {
-  font-size: 2.8vmin;
-  font-weight: 500;
-  color: var(--ink-secondary);
+.spotify__info {
+  min-width: 0;
 }
 
-.exchange__value {
-  font-family: var(--font-mono);
-  font-size: 3.4vmin;
+.spotify__track {
+  font-size: 3.2vmin;
   font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spotify__artist {
+  font-size: 2.6vmin;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.4vmin;
+}
+
+.spotify__progress {
+  height: 0.6vmin;
+  border-radius: 0.3vmin;
+  background: var(--hairline);
+  overflow: hidden;
+}
+
+.spotify__progress-fill {
+  height: 100%;
+  background: var(--accent-green);
+  border-radius: 0.3vmin;
+  transition: width 1s linear;
+}
+
+.spotify__controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6vmin;
+}
+
+.spotify__btn {
+  background: none;
+  border: none;
+  color: var(--ink);
+  font-size: 5vmin;
+  line-height: 1;
+  padding: 1.5vmin;
+  cursor: pointer;
+}
+
+.spotify__btn--main {
+  font-size: 6.5vmin;
   color: var(--accent-green);
-  font-variant-numeric: tabular-nums;
 }
 
 /* ---- Landscape overrides ---- */
@@ -514,8 +565,11 @@ body {
   .daily__temps { font-size: 3.4vmin; }
   .daily__rain { font-size: 2.6vmin; }
 
-  .exchange__label { font-size: 2.2vmin; }
-  .exchange__value { font-size: 2.8vmin; }
+  .spotify__track { font-size: 2.6vmin; }
+  .spotify__artist { font-size: 2.2vmin; }
+  .spotify__art { width: 9vmin; height: 9vmin; }
+  .spotify__btn { font-size: 4vmin; }
+  .spotify__btn--main { font-size: 5.2vmin; }
 }
 
 /* ---- Widget live dot ---- */

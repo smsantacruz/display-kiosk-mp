@@ -19,3 +19,11 @@ GOOGLE_REFRESH_TOKEN=
 # Clave compartida para /api/camera/publish y /api/camera/view (relay de cámara).
 # Generar con: openssl rand -hex 24
 CAMERA_RELAY_TOKEN=
+
+# Spotify Web API (solo control remoto — no reproduce audio en el Worker/kiosk)
+# 1. Crear app en https://developer.spotify.com/dashboard
+# 2. Agregar "http://localhost:3000/callback" como Redirect URI en la app
+# 3. Obtener con: node scripts/get-spotify-token.mjs
+SPOTIFY_CLIENT_ID=
+SPOTIFY_CLIENT_SECRET=
+SPOTIFY_REFRESH_TOKEN=

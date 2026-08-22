@@ -1,7 +1,10 @@
-import type { ApiErr, ApiOk } from "../shared/api-types";
+import type { ApiErr, ApiOk, SpotifyAction } from "../shared/api-types";
 import { cachedFetch } from "./cache";
 import { CameraRelay } from "./cameraRelay";
 import { isKnownSource, sources, type Source } from "./sources";
+import { sendSpotifyCommand } from "./sources/spotify";
+
+const SPOTIFY_ACTIONS: readonly SpotifyAction[] = ["play", "pause", "next", "previous"];
 
 export { CameraRelay };
 
@@ -49,6 +52,20 @@ export default {
       const relayUrl = new URL(request.url);
       relayUrl.searchParams.set("role", role);
       return stub.fetch(new Request(relayUrl, request));
+    }
+
+    if (path.startsWith("/api/spotify/") && request.method === "POST") {
+      const action = path.slice("/api/spotify/".length) as SpotifyAction;
+      if (!SPOTIFY_ACTIONS.includes(action)) {
+        return json(err("spotify", "UNKNOWN_ACTION", `Acción desconocida: ${action}`), 404);
+      }
+      try {
+        await sendSpotifyCommand(env, action);
+        return json({ ok: true });
+      } catch (e) {
+        const message = e instanceof Error ? e.message : String(e);
+        return json(err("spotify", "UPSTREAM_ERROR", message), 502);
+      }
     }
 
     const id = path.slice("/api/".length);

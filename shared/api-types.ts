@@ -1,6 +1,6 @@
 // Contrato JSON entre el Worker (/api/*) y el frontend.
 
-export type SourceId = "solar" | "weather" | "services" | "gmail" | "calendar" | "exchange";
+export type SourceId = "solar" | "weather" | "services" | "gmail" | "calendar" | "exchange" | "spotify";
 
 export interface ApiOk<T> {
   ok: true;
@@ -155,3 +155,14 @@ export interface ExchangeData {
   /** precio de 1 BTC en USDT */
   btcUsdt: number;
 }
+
+export interface SpotifyData {
+  isPlaying: boolean;
+  trackName: string;
+  artistName: string;
+  albumArtUrl: string | null;
+  progressMs: number;
+  durationMs: number;
+}
+
+export type SpotifyAction = "play" | "pause" | "next" | "previous";
