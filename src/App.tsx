@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { GreetingOverlay } from './components/GreetingOverlay'
+import { postAction } from './lib/api'
 import { registry } from './widgets/registry'
 
 // Anti burn-in AMOLED: todo el contenido se desplaza unos px siguiendo un ciclo lento.
@@ -28,6 +29,9 @@ function App() {
   useEffect(() => {
     (window as any).onPalmRecognized = (name: string) => {
       setGreetingName(name)
+      // Le pone play a lo que ya estaba sonando en Spotify Connect (celular, parlante, etc.) —
+      // no hace nada si no había nada pausado/en cola, y no rompe el saludo si Spotify falla.
+      void postAction('/api/spotify/play')
     }
     return () => { delete (window as any).onPalmRecognized }
   }, [])
