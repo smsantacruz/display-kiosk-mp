@@ -7,14 +7,14 @@ import { execSync } from 'child_process';
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-const REDIRECT_URI = 'http://localhost:3000/callback';
+const REDIRECT_URI = 'http://127.0.0.1:3000/callback';
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error('Uso: SPOTIFY_CLIENT_ID=... SPOTIFY_CLIENT_SECRET=... node scripts/get-spotify-token.mjs');
   process.exit(1);
 }
 
-// Nota: "http://localhost:3000/callback" tiene que estar agregado como Redirect URI
+// Nota: "http://127.0.0.1:3000/callback" tiene que estar agregado como Redirect URI
 // en la app de https://developer.spotify.com/dashboard (Settings → Redirect URIs).
 const SCOPES = [
   'user-read-playback-state',
@@ -41,7 +41,7 @@ try {
 const server = createServer(async (req, res) => {
   if (!req.url?.startsWith('/callback')) { res.end(); return; }
 
-  const code = new URL(req.url, 'http://localhost:3000').searchParams.get('code');
+  const code = new URL(req.url, 'http://127.0.0.1:3000').searchParams.get('code');
   if (!code) { res.writeHead(400); res.end('Sin code en callback'); return; }
 
   const basicAuth = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
@@ -74,10 +74,10 @@ const server = createServer(async (req, res) => {
     console.log('Para desarrollo local, agregá esos valores a .dev.vars');
   } else {
     console.error('\n❌ No se recibió refresh_token:', JSON.stringify(tokens, null, 2));
-    console.error('Verificá que "http://localhost:3000/callback" esté en los Redirect URIs de la app.');
+    console.error('Verificá que "http://127.0.0.1:3000/callback" esté en los Redirect URIs de la app.');
   }
 });
 
 server.listen(3000, () => {
-  console.log('Esperando callback en http://localhost:3000/callback...\n');
+  console.log('Esperando callback en http://127.0.0.1:3000/callback...\n');
 });

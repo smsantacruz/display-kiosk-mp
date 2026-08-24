@@ -22,7 +22,8 @@ CAMERA_RELAY_TOKEN=
 
 # Spotify Web API (solo control remoto — no reproduce audio en el Worker/kiosk)
 # 1. Crear app en https://developer.spotify.com/dashboard
-# 2. Agregar "http://localhost:3000/callback" como Redirect URI en la app
+# 2. Agregar "http://127.0.0.1:3000/callback" como Redirect URI en la app
+#    (Spotify ya no acepta "localhost", solo la IP literal 127.0.0.1)
 # 3. Obtener con: node scripts/get-spotify-token.mjs
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
