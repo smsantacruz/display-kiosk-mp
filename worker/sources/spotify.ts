@@ -12,6 +12,7 @@ interface SpotifyPlaybackState {
     album: { images: { url: string }[] };
     duration_ms: number;
   } | null;
+  device: { id: string } | null;
 }
 
 const EMPTY: SpotifyData = {
@@ -59,8 +60,24 @@ const ACTION_ENDPOINT: Record<SpotifyAction, { method: string; path: string }> =
 
 export async function sendSpotifyCommand(env: Env, action: SpotifyAction): Promise<void> {
   const token = await getAccessToken(env);
+
+  // Sin device_id explícito, Spotify a veces aplica el comando al dispositivo "activo" que
+  // *él* decide, que no siempre coincide con el que realmente está sonando cuando hay más de
+  // uno conectado — confirmado en la práctica: pause devolvía 200 sin pausar nada.
+  const stateRes = await fetch("https://api.spotify.com/v1/me/player", {
+    headers: { Authorization: `Bearer ${token}` },
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  const deviceId =
+    stateRes.status === 200
+      ? (await stateRes.json<SpotifyPlaybackState>()).device?.id ?? null
+      : null;
+
   const { method, path } = ACTION_ENDPOINT[action];
-  const res = await fetch(`https://api.spotify.com/v1/me/player/${path}`, {
+  const url = new URL(`https://api.spotify.com/v1/me/player/${path}`);
+  if (deviceId) url.searchParams.set("device_id", deviceId);
+
+  const res = await fetch(url, {
     method,
     headers: { Authorization: `Bearer ${token}` },
     signal: AbortSignal.timeout(TIMEOUT_MS),
