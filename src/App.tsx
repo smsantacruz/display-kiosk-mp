@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
+import type { SpotifyData } from '../shared/api-types'
 import { GreetingOverlay } from './components/GreetingOverlay'
-import { postAction } from './lib/api'
+import { fetchWidget, postAction } from './lib/api'
 import { registry } from './widgets/registry'
 
 // Anti burn-in AMOLED: todo el contenido se desplaza unos px siguiendo un ciclo lento.
@@ -14,6 +15,18 @@ const SHIFT_CYCLE: Array<[number, number]> = [
   [2, -1],
 ]
 const SHIFT_MS = 5 * 60 * 1000
+
+// Gesto de "acercar la palma" como control de música: si está sonando la pausa, si está
+// pausada/parada le da play — un toggle, no un "siempre reanudar" unidireccional.
+async function toggleSpotifyPlayback() {
+  try {
+    const envelope = await fetchWidget<SpotifyData>('/api/spotify')
+    const isPlaying = envelope.ok && envelope.data.isPlaying
+    await postAction(isPlaying ? '/api/spotify/pause' : '/api/spotify/play')
+  } catch {
+    // sin conexión momentánea: no rompe el saludo por esto
+  }
+}
 
 function App() {
   const [shiftIndex, setShiftIndex] = useState(0)
@@ -29,9 +42,7 @@ function App() {
   useEffect(() => {
     (window as any).onPalmRecognized = (name: string) => {
       setGreetingName(name)
-      // Le pone play a lo que ya estaba sonando en Spotify Connect (celular, parlante, etc.) —
-      // no hace nada si no había nada pausado/en cola, y no rompe el saludo si Spotify falla.
-      void postAction('/api/spotify/play')
+      void toggleSpotifyPlayback()
     }
     return () => { delete (window as any).onPalmRecognized }
   }, [])
