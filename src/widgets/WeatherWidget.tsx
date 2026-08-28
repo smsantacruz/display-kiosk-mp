@@ -27,7 +27,7 @@ export function WeatherWidget() {
             <div className="weather__cond">
               <div>{info.label}</div>
               <div className="weather__feels">
-                Sensación {Math.round(data.feelsLikeC)}° · Humedad {Math.round(data.humidityPct)}%
+                Sensación {Math.round(data.feelsLikeC)}°
               </div>
             </div>
           </div>
@@ -38,6 +38,7 @@ export function WeatherWidget() {
               unit="km/h"
               label={data.windDir ? `viento del ${data.windDir}` : 'viento'}
             />
+            <Stat value={String(Math.round(data.humidityPct))} unit="%" label="humedad" />
             {data.radiationWm2 != null && (
               <Stat value={String(Math.round(data.radiationWm2))} unit="W/m²" label="radiación" />
             )}
