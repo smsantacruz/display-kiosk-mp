@@ -36,12 +36,14 @@ export function ClockWidget() {
         {time.slice(0, 2)}<span className="clock__colon">:</span>{time.slice(3)}
         <span key={seconds} className="clock__seconds">{seconds}</span>
       </div>
-      <div className="clock__date">{date}</div>
-      {weather?.sunrise && (
-        <div className="clock__sun">
-          ↑{hhmm(weather.sunrise)} ↓{hhmm(weather.sunset)}
-        </div>
-      )}
+      <div className="clock__meta">
+        <div className="clock__date">{date}</div>
+        {weather?.sunrise && (
+          <div className="clock__sun">
+            ↑{hhmm(weather.sunrise)} ↓{hhmm(weather.sunset)}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

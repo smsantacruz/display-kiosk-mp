@@ -260,6 +260,12 @@ body {
   100% { opacity: 1; transform: scale(1); }
 }
 
+.clock__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
 .clock__date {
   font-size: 3.6vmin;
   font-weight: 500;
