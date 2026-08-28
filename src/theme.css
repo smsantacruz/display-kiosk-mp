@@ -296,15 +296,15 @@ body {
 }
 
 .weather__cond {
-  font-size: 3.1vmin;
+  font-size: 4.2vmin;
   font-weight: 500;
   color: var(--ink-secondary);
 }
 
 .weather__feels {
-  font-size: 2.6vmin;
+  font-size: 3.4vmin;
   color: var(--ink-muted);
-  margin-top: 0.4vmin;
+  margin-top: 0.6vmin;
 }
 
 /* ---- Pronóstico horario ---- */
