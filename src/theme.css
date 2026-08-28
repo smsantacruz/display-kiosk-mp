@@ -182,7 +182,7 @@ body {
 
 .stat__value {
   font-family: var(--font-mono);
-  font-size: 4vmin;
+  font-size: 6.5vmin;
   font-weight: 500;
   line-height: 1.1;
   color: var(--accent-blue);
@@ -190,14 +190,14 @@ body {
 
 .stat__unit {
   font-family: var(--font-mono);
-  font-size: 2.6vmin;
+  font-size: 3.2vmin;
   font-weight: 500;
   color: var(--ink-secondary);
 }
 
 .stat__label {
   font-family: var(--font-mono);
-  font-size: 2.3vmin;
+  font-size: 2.6vmin;
   color: var(--ink-muted);
   margin-top: 0.3vmin;
 }
@@ -228,7 +228,7 @@ body {
 .clock__time {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-  font-size: 27vmin;
+  font-size: 29vmin;
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.04em;
