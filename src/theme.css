@@ -311,6 +311,7 @@ body {
 
 .hourly {
   display: flex;
+  justify-content: space-between;
   gap: 3.5vmin;
 }
 
