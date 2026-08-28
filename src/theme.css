@@ -204,6 +204,7 @@ body {
 
 .stat-row {
   display: flex;
+  justify-content: space-between;
   gap: 4vmin;
   flex-wrap: wrap;
   align-items: end;
